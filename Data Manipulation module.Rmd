@@ -1,0 +1,10 @@
+---
+title: "Data Wrangling"
+output: github_document
+---
+
+```{r setup}
+library(tidyverse)
+```
+
+## Module 2
