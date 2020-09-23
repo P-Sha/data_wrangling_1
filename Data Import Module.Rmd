@@ -100,9 +100,6 @@ skimr::skim(pups_df)
 pups_base = read.csv("./data/FAS_pups.csv")
 pups_readr = read_csv("./data/FAS_pups.csv")
 
-View(pups_base)
-View(pups_readr)
-
 pups_base
 pups_readr
 ```
@@ -117,6 +114,7 @@ pups_readr$S
 Did not work in readr! readr needs a full variable name
 
 ### End assessment 3 
+
 ## End Module 1 
 
 
