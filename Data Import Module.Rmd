@@ -2,18 +2,56 @@
 title: "Data Wrangling"
 output: github_document
 ---
-# Setup
+
+```{r setup}
 library(tidyverse)
+```
+
+## Module 1 
+Read in "Litters" dataset, using Relative path, and
+Change column names to lower snake case
+
+```{r}
+litters_df = read_csv("./data/FAS_litters.csv")
+litters_df = janitor::clean_names(litters_df)
+
+```
+
+## Take a look at the data, different ways.
+
+Printing in the console.
+
+```{r}
+litters_df
+```
+
+Checking head of dataset.
+```{r}
+head(litters_df)
+```
+
+Checking tail of dataset.
+```{r}
+tail(litters_df)
+```
+
+```{r}
+skimr::skim(litters_df)
+```
 
 
-# Module 1 ###################################################
-# Import data "Litters", using Relative path
-getwd()
-"./data/FAS_litters.csv"
+## options to read_csv
 
-# Load data
-litters_data = read_csv(file = "./data/FAS_litters.csv")
-## Parsed with column specification:
+```{r skip 10 rows, first row is not column names}
+litters_df = read_csv("./data/FAS_litters.csv", skip = 10, col_names = FALSE)
+```
+
+check out `?read_csv()` for more information. 
+
+
+## Parse data with column specification:
+
+```{r}
 cols(
 Group = col_character(),
  `Litter Number` = col_character(),
@@ -24,44 +62,41 @@ Group = col_character(),
  `Pups dead @ birth` = col_double(),
  `Pups survive` = col_double()
 )
-
-# Change column names to lower snake case
-litters_data = janitor::clean_names(litters_data)
-names(litters_data)
+```
 
 
-# Learning assessment ----------------------
-# Assessment 1:Import and load data "pups"
-#     Importing data "pups", using Relative path : Not sure if this code is NEEDED, since folder already here??
-getwd()
-"./data/FAS_pups.csv"
 
-#    Load data "pups"
-pups_data = read_csv(file = "./data/FAS_pups.csv")
+### Learning assessment ----------------------
+#### Assessment 1:Import and load data "pups"
 
+```{r}
+pups_df = read_csv("./data/FAS_pups.csv")
+pups_df = janitor::clean_names(pups_df)
 
-# Assessment 2: Parsing data Pups with column specification:
-pups_data = read_csv(file = "./data/FAS_pups.csv",
+```
+
+#### Assessment 2: Parsing data Pups with column specification:
+
+```{r}
+pups_df = read_csv(file = "./data/FAS_pups.csv",
   col_types = cols(
     `Litter Number` = col_character(),
-     Sex = col_integer(),
+    Sex = col_integer(),
     `PD ears` = col_integer(),
     `PD eyes` = col_integer(),
     `PD pivot` = col_integer(),
     `PD walk` = col_integer()
   )
 )
-skimr::skim(pups_data)
-# End Assessments 1, 2 ----------------
+skimr::skim(pups_df)
+```
+### End Assessments 1, 2 ----------------
 
 
-# Looking at data, different ways
-litters_data
-tail(litters_data, 5)
-skimr::skim(litters_data)
+## readr (read_csv) versus base r fuction (read.csv)
+#### assessment #3: 
 
-# readr (read_csv) versus base r fuction (read.csv)
-# assessment #3: 
+```{r}
 pups_base = read.csv("./data/FAS_pups.csv")
 pups_readr = read_csv("./data/FAS_pups.csv")
 
@@ -70,16 +105,18 @@ View(pups_readr)
 
 pups_base
 pups_readr
+```
 
-# accessing sex variable
+
+Accessing sex variable
+
+```{r}
 pups_base$S
-pups_readr$S   # did not work! readr needs a full variable name:/
-# End assessment 3 --------------
-# End Module 1 ---------------------------------------------------
+pups_readr$S 
+```
+Did not work in readr! readr needs a full variable name
 
-
-# Module 2 #############################
-
-
+### End assessment 3 
+## End Module 1 
 
 
