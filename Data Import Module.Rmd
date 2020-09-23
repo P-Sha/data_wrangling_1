@@ -1,0 +1,85 @@
+---
+title: "Data Wrangling"
+output: github_document
+---
+# Setup
+library(tidyverse)
+
+
+# Module 1 ###################################################
+# Import data "Litters", using Relative path
+getwd()
+"./data/FAS_litters.csv"
+
+# Load data
+litters_data = read_csv(file = "./data/FAS_litters.csv")
+## Parsed with column specification:
+cols(
+Group = col_character(),
+ `Litter Number` = col_character(),
+ `GD0 weight` = col_double(),
+ `GD18 weight` = col_double(),
+ `GD of Birth` = col_double(),
+ `Pups born alive` = col_double(),
+ `Pups dead @ birth` = col_double(),
+ `Pups survive` = col_double()
+)
+
+# Change column names to lower snake case
+litters_data = janitor::clean_names(litters_data)
+names(litters_data)
+
+
+# Learning assessment ----------------------
+# Assessment 1:Import and load data "pups"
+#     Importing data "pups", using Relative path : Not sure if this code is NEEDED, since folder already here??
+getwd()
+"./data/FAS_pups.csv"
+
+#    Load data "pups"
+pups_data = read_csv(file = "./data/FAS_pups.csv")
+
+
+# Assessment 2: Parsing data Pups with column specification:
+pups_data = read_csv(file = "./data/FAS_pups.csv",
+  col_types = cols(
+    `Litter Number` = col_character(),
+     Sex = col_integer(),
+    `PD ears` = col_integer(),
+    `PD eyes` = col_integer(),
+    `PD pivot` = col_integer(),
+    `PD walk` = col_integer()
+  )
+)
+skimr::skim(pups_data)
+# End Assessments 1, 2 ----------------
+
+
+# Looking at data, different ways
+litters_data
+tail(litters_data, 5)
+skimr::skim(litters_data)
+
+# readr (read_csv) versus base r fuction (read.csv)
+# assessment #3: 
+pups_base = read.csv("./data/FAS_pups.csv")
+pups_readr = read_csv("./data/FAS_pups.csv")
+
+View(pups_base)
+View(pups_readr)
+
+pups_base
+pups_readr
+
+# accessing sex variable
+pups_base$S
+pups_readr$S   # did not work! readr needs a full variable name:/
+# End assessment 3 --------------
+# End Module 1 ---------------------------------------------------
+
+
+# Module 2 #############################
+
+
+
+
