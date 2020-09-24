@@ -15,7 +15,7 @@ Limit the number of lines printed in a tibble to 5.
 options(tibble.print_min = 5)
 ```
 
-Load PULSE biomarkers dataset.
+Load "PULSE biomarker"s dataset (using "haven" package since data is not csv, it's in sas).
 
 ```{r}
 pulse_df = 
@@ -25,25 +25,41 @@ pulse_df =
 pulse_df
 ```
 
-"Pivot_longer": Import, tidy, and transform the PULSE dataset into a usable format.
+Data Description: For each ID, data shows 4 different observations for bdi score.
+
+Change data from wide format to long format:
+
+## "Pivot_longer"
+Tidy and transform the PULSE dataset into a usable format.
+
+```{r}
+pulse_df_tidy = 
+  pulse_df %>%
+   pivot_longer(
+    bdi_score_bl:bdi_score_12m,
+    names_to = "visit", 
+    names_prefix = "bdi_score_", 
+    values_to = "bdi"
+    ) 
+```
+
+Rwrite, commbine, and extend(to add a mutuate)
 
 ```{r}
 pulse_df = 
   haven::read_sas("./data/public_pulse_data.sas7bdat") %>%
-  janitor::clean_names() %>%
-  pivot_longer(
+  janitor::clean_names() %>% 
+   pivot_longer(
     bdi_score_bl:bdi_score_12m,
     names_to = "visit", 
-    names_prefix = "bdi_score_",
-    values_to = "bdi") %>%
-  relocate(visit) %>%
-  mutate(
-    visit = replace(visit, visit == "bl", "00m"),
-    visit = factor(visit, levels = str_c(c("00", "01", "06", "12"), "m"))) %>%
-  arrange(id, visit)
-
-print(pulse_df, n = 12)
+    names_prefix = "bdi_score_", 
+    values_to = "bdi"
+   ) %>% 
+  relocate(id, visit) %>% 
+  mutate(visit = recode(visit, "bl" = "00m"))
 ```
+
+
 
 "Pivot_wider"
 Create a table:
