@@ -60,15 +60,15 @@ pulse_df =
 ```
 
 
-
-"Pivot_wider"
-Create a table:
+## "Pivot_wider"
+Create a (tidy) data table:
 
 ```{r}
-analysis_result = tibble(
-  group = c("treatment", "treatment", "placebo", "placebo"),
-  time = c("pre", "post", "pre", "post"),
-  mean = c(4, 8, 3.5, 4)
+analysis_result = 
+  tibble(
+    group = c("treatment", "treatment", "placebo", "placebo"),
+    time = c("pre", "post", "pre", "post"),
+    mean = c(4, 8, 3.5, 4)
 )
 
 analysis_result
@@ -79,10 +79,10 @@ Rearrange with pivot_wider to write "time" subcategories in columns:
 ```{r}
 pivot_wider(
   analysis_result, 
-  names_from = "time", 
+  names_from = "time",   ## column names are from "time"
   values_from = "mean")
 ```
-
+Easier to read after pivot_wider!
 
 
 
