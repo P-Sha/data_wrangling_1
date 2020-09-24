@@ -1,0 +1,72 @@
+---
+title: "tidy data and relational datasets"
+output: github_document
+---
+
+```{r setup}
+library(tidyverse)
+```
+
+## Module 3
+
+Limit the number of lines printed in a tibble to 5.
+
+```{r}
+options(tibble.print_min = 5)
+```
+
+Load PULSE biomarkers dataset.
+
+```{r}
+pulse_df = 
+  haven::read_sas("./data/public_pulse_data.sas7bdat") %>%
+  janitor::clean_names()
+
+pulse_df
+```
+
+"Pivot_longer": Import, tidy, and transform the PULSE dataset into a usable format.
+
+```{r}
+pulse_df = 
+  haven::read_sas("./data/public_pulse_data.sas7bdat") %>%
+  janitor::clean_names() %>%
+  pivot_longer(
+    bdi_score_bl:bdi_score_12m,
+    names_to = "visit", 
+    names_prefix = "bdi_score_",
+    values_to = "bdi") %>%
+  relocate(visit) %>%
+  mutate(
+    visit = replace(visit, visit == "bl", "00m"),
+    visit = factor(visit, levels = str_c(c("00", "01", "06", "12"), "m"))) %>%
+  arrange(id, visit)
+
+print(pulse_df, n = 12)
+```
+
+"Pivot_wider"
+Create a table:
+
+```{r}
+analysis_result = tibble(
+  group = c("treatment", "treatment", "placebo", "placebo"),
+  time = c("pre", "post", "pre", "post"),
+  mean = c(4, 8, 3.5, 4)
+)
+
+analysis_result
+```
+
+Rearrange with pivot_wider to write "time" subcategories in columns:
+
+```{r}
+pivot_wider(
+  analysis_result, 
+  names_from = "time", 
+  values_from = "mean")
+```
+
+
+
+
